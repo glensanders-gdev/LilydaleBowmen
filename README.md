@@ -2,7 +2,7 @@
 
 A mobile-first Progressive Web App (PWA) for members of the **Lilydale Bowmen** archery club, Montrose, Victoria. Built as a single HTML file — no install, no server, no dependencies.
 
-**Live app:** `https://glensanders-gdev.github.io/LilydaleBowmen/`
+**Live app:** `https://YOUR-USERNAME.github.io/lilydale-bowmen-app/`
 
 ---
 
@@ -157,26 +157,24 @@ All distances are **unmarked** — competitors estimate range.
 ## Club Information
 
 **Lilydale Bowmen Inc.**
-Pitt Street Reserve, Lilydale VIC 3140
+Pavitt Ln, The Basin VIC 3765
 [lilydalebowmen.com.au](https://lilydalebowmen.com.au)
 
 Disciplines: Target · Field · 3D · Bowhunting
-
-| Fee | Amount |
-|-----|--------|
-| New member (pro-rata, excl. ABA fees) | $120 |
-| Annual renewal (due January) | $75 |
-| ABA membership (12-month rolling) | $110 |
 
 ---
 
 ## Version History
 
+> **Note:** Detailed changelog tracking began at v0.22. Earlier versions are reconstructed from development session records.
+
+### Recent (v0.22 onwards)
+
 | Version | Notes |
 |---------|-------|
 | v0.42 | Group scoring: Add Member / Profile / Guest; bow type toggle sliders in profile |
 | v0.41 | Bow type selector converted to toggle rows; confirm dialog for archer deletion |
-| v0.40 | Custom confirm dialog replacing iOS-blocked native confirm() |
+| v0.40 | Custom confirm dialog replacing iOS-blocked native `confirm()` |
 | v0.39 | IFAA Indoor: scoring method chooser (Arrow Plotting / Number Entry), Single Spot / 5-Spot |
 | v0.38 | Compact pill-style round and category buttons; fixed saved round card layout |
 | v0.37 | Improved error trap with full stack traces; group course selector scoped fix |
@@ -189,7 +187,34 @@ Disciplines: Target · Field · 3D · Bowhunting
 | v0.28 | Weather section removed; combined round removal; iOS error trapping |
 | v0.26 | Group scoring; calendar export (.ics / Google Calendar) |
 | v0.24 | Multi-archer profile system; per-profile data isolation |
-| v0.22 | Initial release |
+| v0.22 | iOS Safari compatibility fixes; PWA test build |
+
+### Early development (v0.0 – v0.21, March 2026)
+
+| Version | Notes |
+|---------|-------|
+| v0.21 | Optional chaining fixes; element null-safety throughout |
+| v0.20 | Bow profile recorded on all saved rounds; back-fill via edit sheet |
+| v0.19 | Bow filter in Stats tab; rounds filterable by bow setup |
+| v0.18 | Calendar rendering cleanup; orphaned render calls removed |
+| v0.17 | Event filters independent per section (Upcoming / Past / Calendar) |
+| v0.16 | Per-archer filter preferences; filter row refreshes on profile switch |
+| v0.15 | Past events month navigation; No Intro Course entries handled correctly |
+| v0.14 | Score linking on past events; gold border on shoot/competition events |
+| v0.13 | Past events section on Home tab with month navigation |
+| v0.12 | Add / edit / delete custom calendar events |
+| v0.11 | Upcoming events filter chips (ABA Comp, Club ABA, IFAA, 3D, Working Bee, Meetings) |
+| v0.10 | Home tab upcoming events list; date badges; event type tags |
+| v0.9 | IFAA Indoor end-by-end arrow plotting with save-as-PNG |
+| v0.8 | Stats tab: PB, year average, course breakdown, history bar chart |
+| v0.7 | Seed scoring history; seed bow setups with example profiles |
+| v0.6 | Training journal removed; tab renamed Stats |
+| v0.5 | Multi-profile system; per-profile localStorage isolation; profile migration |
+| v0.4 | Responsive layout; mobile-first breakpoints; button and input styling |
+| v0.3 | Logo embedded as base64; membership fee details |
+| v0.2 | PWA support (manifest, service worker); group scoring initial implementation |
+| v0.1 | Group scoring patch; logo upload; multi-profile refactor (later rolled back) |
+| v0.0 | Initial build: all tabs, scoring logic, ABA/IFAA rounds, target reference, training journal, weather/fire API |
 
 ---
 
