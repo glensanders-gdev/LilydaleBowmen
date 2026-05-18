@@ -1,8 +1,8 @@
 # 🏹 Lilydale Bowmen Archery App
 
-A mobile-first Progressive Web App (PWA) for members of the **Lilydale Bowmen** archery club, Montrose, Victoria. Built as a single HTML file — no install, no server, no dependencies.
+A mobile-first Progressive Web App (PWA) for members of the **Lilydale Bowmen** archery club, The Basin, Victoria. Built as a single HTML file — no install, no server, no dependencies.
 
-**Live app:** `https://YOUR-USERNAME.github.io/lilydale-bowmen-app/`
+**Live app:** https://glensanders-gdev.github.io/LilydaleBowmen/
 
 ---
 
@@ -86,7 +86,7 @@ No build step, no framework, no dependencies — just upload and go.
 
 ## Privacy & Data
 
-**All data is stored locally on your device.** Nothing is sent to any server.
+**All data is stored locally on your device** and silently backed up to a private cloud database. No account or login is required — your device is identified by an anonymous device ID that is generated automatically.
 
 | Storage key | Contents |
 |-------------|----------|
@@ -99,8 +99,9 @@ No build step, no framework, no dependencies — just upload and go.
 | `lb_event_filters` | Filter preferences |
 | `lb_scoring_prefs` | Tracking options toggles |
 | `lb_extra_clubs__<id>` | Additional club memberships |
+| `lb_device_id` | Anonymous device identifier for cloud sync |
 
-Clearing your browser's site data will erase all saved information. There is no cloud backup.
+The app works fully offline — cloud sync happens silently in the background when a connection is available and fails gracefully when offline. Clearing your browser's site data will erase local data; cloud data is retained and can be used to restore to a new device in a future update.
 
 ---
 
@@ -162,6 +163,12 @@ Pavitt Ln, The Basin VIC 3765
 
 Disciplines: Target · Field · 3D · Bowhunting
 
+| Fee | Amount |
+|-----|--------|
+| New member (pro-rata, excl. ABA fees) | $120 |
+| Annual renewal (due January) | $75 |
+| ABA membership (12-month rolling) | $110 |
+
 ---
 
 ## Version History
@@ -172,6 +179,11 @@ Disciplines: Target · Field · 3D · Bowhunting
 
 | Version | Notes |
 |---------|-------|
+| v0.47 | Supabase silent background sync — device ID, profiles, scores, bow setups, events, prefs |
+| v0.46 | Supabase backend setup; schema created; RLS policies; device-based identity |
+| v0.45 | 2026 calendar updated from club image; club address corrected to The Basin VIC 3765 |
+| v0.44 | Backup and restore (JSON export/import); last backup label; `LB_ScoresBackup` filename |
+| v0.43 | Reset warning dialog (shows target count); confirm callback null bug fixed |
 | v0.42 | Group scoring: Add Member / Profile / Guest; bow type toggle sliders in profile |
 | v0.41 | Bow type selector converted to toggle rows; confirm dialog for archer deletion |
 | v0.40 | Custom confirm dialog replacing iOS-blocked native `confirm()` |
@@ -225,6 +237,7 @@ Disciplines: Target · Field · 3D · Bowhunting
 - **Fonts** loaded from Google Fonts (Playfair Display + Outfit)
 - **PWA** — service worker and manifest for offline capability and home screen install
 - **iOS compatibility** — native `confirm()` and `alert()` avoided in favour of custom in-app dialogs
+- **Supabase sync** — silent background sync to Supabase (PostgreSQL); device-based identity, no user accounts; RLS enforced per device
 
 ---
 

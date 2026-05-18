@@ -2838,6 +2838,8 @@ window.onunhandledrejection = function(e) {
   window.__earlyErrors.push({msg:'Unhandled promise: '+(e.reason||e), src:'', line:''});
 };
 </script>
+<!-- Supabase JS client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -3300,7 +3302,7 @@ window.onunhandledrejection = function(e) {
       <div style="padding-top:10px;">
         <div class="info-row">
           <span class="info-label">Location</span>
-          <span class="info-value">Pitt Street Reserve, Lilydale VIC 3140</span>
+          <span class="info-value">Pavitt Ln, The Basin VIC 3765</span>
         </div>
         <div class="info-row">
           <span class="info-label">Disciplines</span>
@@ -3914,6 +3916,9 @@ window.onunhandledrejection = function(e) {
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- Hidden file input for backup import -->
+<input type="file" id="backup-file-input" accept=".json" style="display:none;">
+
 <!-- TARGETS -->
 <div id="page-targets" class="page">
 
@@ -4456,6 +4461,21 @@ window.onunhandledrejection = function(e) {
       <div class="item-sub">ABA animal &amp; IFAA indoor reference</div>
     </div>
   </button>
+  <div style="height:1px;background:rgba(255,255,255,0.07);margin:4px 0;"></div>
+  <button class="other-sheet-item" onclick="closeOtherSheet();exportBackup()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    <div>
+      <div>Export Backup</div>
+      <div class="item-sub" id="last-backup-label">Last backup: N/A</div>
+    </div>
+  </button>
+  <button class="other-sheet-item" onclick="closeOtherSheet();importBackup()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10" transform="rotate(180 12 12)"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    <div>
+      <div>Import Backup</div>
+      <div class="item-sub">Restore data from a file</div>
+    </div>
+  </button>
 
 </div>
 
@@ -4491,6 +4511,7 @@ window.onunhandledrejection = function(e) {
     document.getElementById('other-overlay').classList.add('open');
     document.getElementById('other-sheet').classList.add('open');
     document.getElementById('other-btn').classList.add('active');
+    updateLastBackupLabel();
   }
 
   function closeOtherSheet() {
@@ -4592,12 +4613,12 @@ window.onunhandledrejection = function(e) {
     { month:  4,  day: 16, title: 'Intro Course',                        time: '1:30pm', type: 'Intro' },
     { month:  4,  day: 2,  title: 'BPC Bowhunter Proficiency Cert',    time: '',       type: 'Club' },
     { month:  4,  day: 3,  title: 'Club ABA & General Meeting',         time: '9:00am', type: 'Shoot' },
-    { month:  4,  day: 10, title: 'Working Bee',                        time: '',       type: 'Club' },
+    { month:  4,  day: 9,  title: 'Working Bee',                        time: '',       type: 'Club' },
     { month:  4,  day: 16, title: 'Colac Otway Archers 2-Day',         time: '9:00am', type: 'Competition' },
     { month:  4,  day: 17, title: 'Colac Otway Archers 2-Day',         time: '9:00am', type: 'Competition' },
     { month:  4,  day: 23, title: 'Club Heritage',                      time: '9:00am', type: 'Shoot' },
     { month:  4,  day: 25, title: 'Committee Meeting',                  time: '',       type: 'Meeting' },
-    { month:  4,  day: 24, title: 'Club IFAA',                          time: '9:00am', type: 'Shoot' },
+    { month:  4,  day: 31, title: 'Club IFAA',                          time: '9:00am', type: 'Shoot' },
 
     // ── JUNE (month 5) ──────────────────────────────────────────
     { month:  5,  day: 13, title: 'Intro Course',                        time: '1:30pm', type: 'Intro' },
@@ -4606,23 +4627,27 @@ window.onunhandledrejection = function(e) {
     { month:  5,  day: 6,  title: 'IFAA State Titles – Geelong Trophy', time: '9:00am', type: 'Competition' },
     { month:  5,  day: 7,  title: 'IFAA State Titles – Geelong Trophy', time: '9:00am', type: 'Competition' },
     { month:  5,  day: 14, title: 'Club ABA & General Meeting',          time: '9:00am', type: 'Shoot' },
-    { month:  5,  day: 28, title: 'Club 3D',                             time: '9:00am', type: 'Shoot' },
+    { month:  5,  day: 27, title: 'Branch H Hunt',                       time: '9:00am', type: 'Competition' },
+    { month:  5,  day: 28, title: 'Branch H Hunt',                       time: '9:00am', type: 'Competition' },
 
     // ── JULY (month 6) ──────────────────────────────────────────
     { month:  6,  day: 11, title: 'Intro Course',                        time: '1:30pm', type: 'Intro' },
     { month:  6,  day: 18, title: 'Intro Course',                        time: '1:30pm', type: 'Intro' },
     { month:  6,  day: 25, title: 'Intro Course',                        time: '1:30pm', type: 'Intro' },
-    { month:  6,  day: 5,  title: 'Club Heritage (Sunday)',              time: '9:00am', type: 'Shoot' },
+    { month:  6,  day: 5,  title: 'Club 3D',                            time: '9:00am', type: 'Shoot' },
     { month:  6,  day: 12, title: 'Working Bee',                         time: '',       type: 'Club' },
     { month:  6,  day: 13, title: 'Committee Meeting',                   time: '',       type: 'Meeting' },
     { month:  6,  day: 19, title: 'Club ABA & General Meeting',          time: '9:00am', type: 'Shoot' },
+    { month:  6,  day: 24, title: 'ABA National Titles – Macleay Valley Archers', time: '9:00am', type: 'Competition' },
+    { month:  6,  day: 25, title: 'ABA National Titles – Macleay Valley Archers', time: '9:00am', type: 'Competition' },
+    { month:  6,  day: 26, title: 'ABA National Titles – Macleay Valley Archers', time: '9:00am', type: 'Competition' },
 
     // ── AUGUST (month 7) ────────────────────────────────────────
     { month:  7,  day: 8,  title: 'Intro Course',                        time: '1:30pm', type: 'Intro' },
     { month:  7,  day: 15, title: 'Intro Course',                        time: '1:30pm', type: 'Intro' },
     { month:  7,  day: 22, title: 'Intro Course',                        time: '1:30pm', type: 'Intro' },
-    { month:  7,  day: 1,  title: 'ABA State Titles – Phoenix Field Archers', time: '9:00am', type: 'Competition' },
-    { month:  7,  day: 2,  title: 'ABA State Titles – Phoenix Field Archers', time: '9:00am', type: 'Competition' },
+    { month:  7,  day: 1,  title: 'ABA State Titles – Phoenix Field Archers Sale', time: '9:00am', type: 'Competition' },
+    { month:  7,  day: 2,  title: 'ABA State Titles – Phoenix Field Archers Sale', time: '9:00am', type: 'Competition' },
     { month:  7,  day: 16, title: 'Club 3D',                             time: '9:00am', type: 'Shoot' },
     { month:  7,  day: 17, title: 'Committee Meeting',                   time: '',       type: 'Meeting' },
     { month:  7,  day: 22, title: 'Bendigo Field Archers 2-Day',         time: '9:00am', type: 'Competition' },
@@ -5958,10 +5983,24 @@ window.onunhandledrejection = function(e) {
   });
 
   document.getElementById('btn-reset').addEventListener('click', () => {
-    clearSavedProgress();
-    sc.targetHistory = []; sc.currentArrows = []; sc.shotsCompleted = 0;
-    document.getElementById('scoring-area').style.display = 'none';
-    buildStartPrompt();
+    var completed = sc.targetHistory.length;
+    if (completed > 0) {
+      showConfirmDialog(
+        'Reset Round?',
+        'This will erase all ' + completed + ' target' + (completed !== 1 ? 's' : '') + ' scored so far. This cannot be undone.',
+        function() {
+          clearSavedProgress();
+          sc.targetHistory = []; sc.currentArrows = []; sc.shotsCompleted = 0;
+          document.getElementById('scoring-area').style.display = 'none';
+          buildStartPrompt();
+        }
+      );
+    } else {
+      clearSavedProgress();
+      sc.targetHistory = []; sc.currentArrows = []; sc.shotsCompleted = 0;
+      document.getElementById('scoring-area').style.display = 'none';
+      buildStartPrompt();
+    }
   });
 
   document.querySelectorAll('.round-btn').forEach(btn => {
@@ -6054,6 +6093,22 @@ window.onunhandledrejection = function(e) {
       // Keep last 50 rounds
       if (existing.length > 50) existing.length = 50;
       localStorage.setItem(HISTORY_KEY, JSON.stringify(existing));
+      // Sync this record to Supabase
+      syncToSupabase('score_history', {
+        device_id:  getDeviceId(),
+        record_id:  record.id,
+        profile_id: record.profileId || null,
+        round_id:   record.roundId   || null,
+        round_name: record.roundName || null,
+        score:      record.score,
+        max_score:  record.maxScore  || null,
+        course:     record.course    || null,
+        category:   record.category  || 'Practice',
+        division:   record.division  || null,
+        date:       record.date,
+        data:       record,
+        updated_at: new Date().toISOString()
+      });
       return true;
     } catch(e) { return false; }
   }
@@ -6791,6 +6846,12 @@ window.onunhandledrejection = function(e) {
     }
     try {
       localStorage.setItem(profileBowKey(), JSON.stringify(bs));
+      syncToSupabase('bow_setups', {
+        device_id:  getDeviceId(),
+        profile_id: activeProfileId(),
+        data:       bs,
+        updated_at: new Date().toISOString()
+      });
       renderBowCardBody(type);
       showToast('✓ Setup saved');
     } catch(e) { showToast('Could not save setup'); }
@@ -7220,7 +7281,19 @@ window.onunhandledrejection = function(e) {
     catch(e) { return []; }
   }
   function saveProfiles(arr) {
-    try { localStorage.setItem(PROFILES_KEY, JSON.stringify(arr)); } catch(e) {}
+    try {
+      localStorage.setItem(PROFILES_KEY, JSON.stringify(arr));
+      // Sync each profile to Supabase
+      var did = getDeviceId();
+      arr.forEach(function(p) {
+        syncToSupabase('profiles', {
+          device_id:  did,
+          profile_id: p.id,
+          data:       p,
+          updated_at: new Date().toISOString()
+        });
+      });
+    } catch(e) {}
   }
   function activeProfileId() {
     return localStorage.getItem(ACTIVE_ID_KEY) || '';
@@ -7522,7 +7595,7 @@ window.onunhandledrejection = function(e) {
     buildHomeEvents();
   }
 
-  const CLUB_ADDRESS = 'Pitt Street Reserve, Lilydale VIC 3140';
+  const CLUB_ADDRESS = 'Pavitt Ln, The Basin VIC 3765';
 
   const UPCOMING_TRACK = [
     { match: t => /ABA National|ABA State|ABA.*State|State.*ABA/i.test(t), label: 'ABA Competition', tag: 'tag-competition', info: 'Muster 9:30am on shoot days' },
@@ -7688,7 +7761,14 @@ window.onunhandledrejection = function(e) {
     catch(e) { return []; }
   }
   function saveUserEvents(arr) {
-    try { localStorage.setItem(USER_EVENTS_KEY, JSON.stringify(arr)); } catch(e) {}
+    try {
+      localStorage.setItem(USER_EVENTS_KEY, JSON.stringify(arr));
+      syncToSupabase('user_events', {
+        device_id:  getDeviceId(),
+        data:       arr,
+        updated_at: new Date().toISOString()
+      });
+    } catch(e) {}
   }
 
   // Merge EVENTS + user events + Wednesday indoor nights for a given month
@@ -8858,7 +8938,34 @@ function updateGroupArcherProfile(oldId, newId) {
 
 function updateGroupGuestName(id, name) {
   var a = gs.archers.find(function(x) { return x.id === id; });
-  if (a) a.name = name.trim() || 'Guest';
+  if (a) a.name = name.trim() || (a.isMember ? 'Member' : 'Guest');
+}
+
+function updateGroupMemberLB(id, lbNum) {
+  var a = gs.archers.find(function(x) { return x.id === id; });
+  if (!a) return;
+  a.lbNum = lbNum.trim();
+
+  // Attempt to match LB number to a saved profile on this device
+  if (a.lbNum) {
+    var profiles = loadProfiles();
+    var usedIds  = gs.archers.filter(function(x) { return !x.isGuest && !x.isMember; }).map(function(x) { return x.id; });
+    var match    = profiles.find(function(p) {
+      return p.memberLB && p.memberLB.num &&
+             p.memberLB.num.trim().toLowerCase() === a.lbNum.toLowerCase() &&
+             !usedIds.includes(p.id);
+    });
+    if (match) {
+      // Promote to a profile entry — use the saved profile's name and data
+      a.isMember  = false;
+      a.id        = match.id;
+      a.name      = match.name || a.name;
+      a.division  = match.division || '';
+      a.lbNum     = null;
+      showToast('✓ Matched to profile: ' + (match.name || 'Archer'));
+      renderGroupRoster();
+    }
+  }
 }
 
 // ── Launch group scoring ───────────────────────────────────────────────────────
@@ -9051,11 +9158,21 @@ function finishGroupRound() {
       var as = h.archerScores.find(function(x) { return x.archerId === a.id; }) || { arrows: [], total: 0 };
       return { targetNum: h.targetNum, arrows: as.arrows, animal: '', group: '', total: as.total };
     });
-    var profileId = a.isGuest ? null : a.id;
+    var profileId = a.isGuest ? null : (a.isMember ? null : a.id);
+    var memberName = a.name || null;
+    var lbNum = null;
+    if (!a.isGuest && !a.isMember && a.id) {
+      var prof = loadProfiles().find(function(p) { return p.id === a.id; });
+      if (prof) lbNum = (prof.memberLB && prof.memberLB.num) ? prof.memberLB.num : null;
+    } else if (a.isMember && a.lbNum) {
+      lbNum = a.lbNum;
+    }
     var record = {
-      id:        Date.now() + Math.floor(Math.random() * 1000),
-      profileId: profileId,
-      guestName: a.isGuest ? a.name : null,
+      id:             Date.now() + Math.floor(Math.random() * 1000),
+      profileId:      profileId,
+      memberName:     memberName,
+      lbMemberNumber: lbNum,
+      guestName:      a.isGuest ? a.name : null,
       club:      gs.club,
       roundId:   gs.roundId,
       roundName: round.name,
@@ -9299,7 +9416,7 @@ function getExportEvents() {
   var incIntro  = document.getElementById('exp-intro').checked;
   var incMeet   = document.getElementById('exp-meetings').checked;
   var incCustom = document.getElementById('exp-custom').checked;
-  var CLUB_LOC  = 'Pitt Street Reserve, Lilydale VIC 3140';
+  var CLUB_LOC  = 'Pavitt Ln, The Basin VIC 3765';
 
   var events = [];
   var seen   = new Set();
@@ -9687,7 +9804,15 @@ function loadScoringPrefs() {
   catch(e) { return {}; }
 }
 function saveScoringPrefs(p) {
-  try { localStorage.setItem(SCORING_PREFS_KEY, JSON.stringify(p)); } catch(e) {}
+  try {
+    localStorage.setItem(SCORING_PREFS_KEY, JSON.stringify(p));
+    syncToSupabase('preferences', {
+      device_id:  getDeviceId(),
+      key:        'scoring_prefs',
+      value:      JSON.stringify(p),
+      updated_at: new Date().toISOString()
+    });
+  } catch(e) {}
 }
 function toggleScoringPrefs() {
   var panel   = document.getElementById('scoring-prefs-panel');
@@ -9763,8 +9888,9 @@ function showConfirmDialog(title, body, onProceed) {
   document.getElementById('confirm-title').textContent = title;
   document.getElementById('confirm-body').textContent  = body;
   document.getElementById('confirm-proceed-btn').onclick = function() {
+    var cb = _confirmCallback;
     closeConfirmDialog();
-    if (_confirmCallback) _confirmCallback();
+    if (cb) cb();
   };
   var el = document.getElementById('confirm-overlay');
   el.style.display = 'flex';
@@ -9773,6 +9899,186 @@ function showConfirmDialog(title, body, onProceed) {
 function closeConfirmDialog() {
   document.getElementById('confirm-overlay').style.display = 'none';
   _confirmCallback = null;
+}
+
+
+// ===================== BACKUP & RESTORE =====================
+
+var BACKUP_KEYS = [
+  'lb_profiles',
+  'lb_active_profile_id',
+  'lb_score_history',
+  'lb_scoring_progress',
+  'lb_scoring_prefs',
+  'lb_event_filters',
+  'lb_filter_prefs_version',
+  'lb_user_events',
+  'lb_event_scores',
+  'lb_extra_clubs',
+  'lb_bow_seed_version',
+  'lb_score_seed_version',
+];
+
+function exportBackup() {
+  try {
+    var backup = {
+      version: 1,
+      exported: new Date().toISOString(),
+      app: 'Lilydale Bowmen',
+      data: {}
+    };
+
+    // Collect all standard keys
+    BACKUP_KEYS.forEach(function(key) {
+      var val = localStorage.getItem(key);
+      if (val !== null) backup.data[key] = val;
+    });
+
+    // Collect per-profile bow setup keys (lb_bow_setups__<id>)
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.startsWith('lb_bow_setups__')) {
+        backup.data[k] = localStorage.getItem(k);
+      }
+    }
+
+    var json     = JSON.stringify(backup, null, 2);
+    var blob     = new Blob([json], { type: 'application/json' });
+    var url      = URL.createObjectURL(blob);
+    var dateStr  = new Date().toISOString().slice(0,10);
+    var a        = document.createElement('a');
+    a.href       = url;
+    var d2       = new Date();
+    var dd       = String(d2.getDate()).padStart(2,'0');
+    var mm       = String(d2.getMonth()+1).padStart(2,'0');
+    var yyyy     = d2.getFullYear();
+    a.download   = 'LB_ScoresBackup_' + dd + '-' + mm + '-' + yyyy + '.json';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
+    localStorage.setItem('lb_last_backup', new Date().toISOString());
+    updateLastBackupLabel();
+    showToast('✓ Backup saved');
+  } catch(e) {
+    showToast('⚠️ Export failed: ' + (e.message || e));
+  }
+}
+
+function updateLastBackupLabel() {
+  var el = document.getElementById('last-backup-label');
+  if (!el) return;
+  var raw = localStorage.getItem('lb_last_backup');
+  if (!raw) {
+    el.textContent = 'Last backup: N/A';
+    return;
+  }
+  try {
+    var d = new Date(raw);
+    var dateStr = d.toLocaleDateString('en-AU', { day:'2-digit', month:'2-digit', year:'numeric' });
+    el.textContent = 'Last backup: ' + dateStr;
+  } catch(e) {
+    el.textContent = 'Last backup: N/A';
+  }
+}
+
+function importBackup() {
+  var input = document.getElementById('backup-file-input');
+  if (!input) return;
+  input.value = '';
+  input.onchange = function() {
+    var file = input.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        var backup = JSON.parse(e.target.result);
+
+        // Validate it looks like a real backup
+        if (!backup || backup.app !== 'Lilydale Bowmen' || !backup.data) {
+          showToast('⚠️ Invalid backup file');
+          return;
+        }
+
+        var keyCount = Object.keys(backup.data).length;
+        showConfirmDialog(
+          'Restore Backup?',
+          'This will replace all current data with the backup from ' +
+            new Date(backup.exported).toLocaleDateString('en-AU', {day:'numeric',month:'short',year:'numeric'}) +
+            ' (' + keyCount + ' data sets). Your current data will be overwritten.',
+          function() {
+            try {
+              // Write all keys from backup
+              Object.keys(backup.data).forEach(function(key) {
+                localStorage.setItem(key, backup.data[key]);
+              });
+              showToast('✓ Backup restored — reloading…');
+              setTimeout(function() { window.location.reload(); }, 1200);
+            } catch(err) {
+              showToast('⚠️ Restore failed: ' + (err.message || err));
+            }
+          }
+        );
+      } catch(err) {
+        showToast('⚠️ Could not read backup file');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// ===================== SUPABASE SYNC =====================
+
+var SUPABASE_URL      = 'https://cciculdqvujdanemeocf.supabase.co';
+var SUPABASE_ANON_KEY = 'sb_publishable_a4dXEtw34dpIoU6zQ7ZXGw_sbC15pWo';
+var _supabase = null;
+
+function getSupabase() {
+  if (_supabase) return _supabase;
+  try {
+    if (window.supabase && window.supabase.createClient) {
+      _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch(e) {}
+  return _supabase;
+}
+
+function getDeviceId() {
+  var id = localStorage.getItem('lb_device_id');
+  if (!id) {
+    // Generate UUID v4
+    id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0;
+      var v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+    localStorage.setItem('lb_device_id', id);
+  }
+  return id;
+}
+
+function initDeviceId() {
+  var deviceId = getDeviceId();
+  var sb = getSupabase();
+  if (!sb) return;
+  sb.from('devices')
+    .upsert({ device_id: deviceId, last_seen: new Date().toISOString() },
+            { onConflict: 'device_id' })
+    .then(function() {})
+    .catch(function() {});
+}
+
+// Fire-and-forget upsert — never throws, never blocks UI
+function syncToSupabase(table, payload) {
+  var sb = getSupabase();
+  if (!sb) return;
+  try {
+    sb.from(table)
+      .upsert(payload, { onConflict: Object.keys(payload).filter(function(k) {
+        return k === 'device_id' || k === 'record_id' || k === 'profile_id' || k === 'key';
+      }).join(',') })
+      .then(function() {})
+      .catch(function() {});
+  } catch(e) {}
 }
 
 // ===================== INITIALISE =====================
@@ -9808,6 +10114,7 @@ function runInit() {
     return;
   }
   var steps = [
+    ['initDeviceId',         function() { initDeviceId(); }],
     ['initProfiles',         function() { initProfiles(); }],
     ['renderCalendar',       function() { renderCalendar(); }],
     ['renderExtraClubs',     function() { renderExtraClubs(); }],
