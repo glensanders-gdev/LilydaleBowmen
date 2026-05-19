@@ -179,6 +179,18 @@ Disciplines: Target · Field · 3D · Bowhunting
 
 | Version | Notes |
 |---------|-------|
+| v0.59 | Past events starts at current month; Didn't attend button with undo |
+| v0.58 | Bug fix: bow types not persisting on profile switch |
+| v0.57 | Active arrow slot highlight and larger arrow label for scoring clarity |
+| v0.56 | Bug fix: logo click caused oversized logo |
+| v0.55 | Tap logo to return to Scoring tab |
+| v0.54 | Bug fix: calendar grid addEventListener null error after tab restructure |
+| v0.53 | Tab restructure: Profile (tab 1), Events (tab 2); calendar grid removed; Profile removed from Other sheet |
+| v0.52 | Lilydale Bowmen logo added to membership dropdown rows |
+| v0.51 | Header location corrected to The Basin, Victoria |
+| v0.50 | Annual Fee field removed from Add Club Membership sheet |
+| v0.49 | Membership cards simplified to collapsible dropdowns; bow toggle rows smaller |
+| v0.48 | Profile and Memberships pages combined; deleteExtraClub iOS confirm() fix |
 | v0.47 | Supabase silent background sync — device ID, profiles, scores, bow setups, events, prefs |
 | v0.46 | Supabase backend setup; schema created; RLS policies; device-based identity |
 | v0.45 | 2026 calendar updated from club image; club address corrected to The Basin VIC 3765 |
