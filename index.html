@@ -7986,6 +7986,7 @@ window.onunhandledrejection = function(e) {
     { match: t => /Club ABA/i.test(t),                       label: 'Club ABA',        tag: 'tag-aba'         },
     { match: t => /Club IFAA/i.test(t),                      label: 'Club IFAA',       tag: 'tag-ifaa'        },
     { match: t => /Club 3D/i.test(t),                        label: 'Club 3D',         tag: 'tag-3d'          },
+    { match: t => /Indoor Training Night/i.test(t),          label: 'Indoor',          tag: 'tag-indoor'      },
     { match: t => /Working Bee/i.test(t),                    label: 'Working Bee',     tag: 'tag-workingbee',  noScore: true },
     { match: t => /General Meeting|Committee Meeting|AGM/i.test(t), label: 'Meeting',  tag: 'tag-meeting',     noScore: true },
     { match: t => /Intro Course/i.test(t),    label: 'Intro Course', tag: 'tag-intro',    noScore: true },
@@ -8084,9 +8085,12 @@ window.onunhandledrejection = function(e) {
 
   function getPastEventsForMonth(year, month, today) {
     const allUserEvs = loadUserEvents();
+    const wednesdayIndoor = getWednesdayIndoorEvents(year, month)
+      .map(e => ({ ...e, year }));
     const allEvs = [
       ...EVENTS.map(e => ({ ...e, year: PAST_EVENTS_YEAR })),
       ...allUserEvs,
+      ...wednesdayIndoor,
     ];
 
     const past = [];

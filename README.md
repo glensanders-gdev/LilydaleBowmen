@@ -179,6 +179,8 @@ Disciplines: Target · Field · 3D · Bowhunting
 
 | Version | Notes |
 |---------|-------|
+| v0.61 | Bug fix: Indoor Training Nights now appear in past events |
+| v0.60 | Wednesday indoor nights added to past events generation |
 | v0.59 | Past events starts at current month; Didn't attend button with undo |
 | v0.58 | Bug fix: bow types not persisting on profile switch |
 | v0.57 | Active arrow slot highlight and larger arrow label for scoring clarity |
