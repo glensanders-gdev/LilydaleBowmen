@@ -179,6 +179,21 @@ Disciplines: Target · Field · 3D · Bowhunting
 
 | Version | Notes |
 |---------|-------|
+| v0.76 | Group scoring: stop after first scoring arrow (ABA rule); smaller archer cards |
+| v0.75 | Group scoring: score values shown on buttons per arrow slot |
+| v0.74 | Memberships: unified inline card system with collapsed summary |
+| v0.73 | Bow types in collapsible dropdown; Add Club button inline |
+| v0.72 | Score boxes (Total/Done/Max) now update during round |
+| v0.71 | IFAA Indoor num mode: target face hidden after end completes |
+| v0.70 | Bug fix: bow profile name reverting in edit modal |
+| v0.69 | IFAA Indoor: Course, Starting Target, Peg hidden from Tracking Options |
+| v0.68 | Scoring Division + Peg on profile; auto-fill in scoring; Club/Official mandatory fields |
+| v0.67 | Peg Colour (Red/Green/Yellow) added to scoring and group roster |
+| v0.66 | Bow edit as centred floating modal |
+| v0.65 | Age Category defaults to Adult silently |
+| v0.64 | Grade (A/B/C) added to profile and group roster |
+| v0.63 | Division renamed Membership Grade; full ABA/IFAA Scoring Division in group roster |
+| v0.62 | Gender + Age Category on profile and group roster; Club/Official validation |
 | v0.61 | Bug fix: Indoor Training Nights now appear in past events |
 | v0.60 | Wednesday indoor nights added to past events generation |
 | v0.59 | Past events starts at current month; Didn't attend button with undo |
