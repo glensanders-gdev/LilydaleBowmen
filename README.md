@@ -179,6 +179,7 @@ Disciplines: Target · Field · 3D · Bowhunting
 
 | Version | Notes |
 |---------|-------|
+| v0.77 | Service worker rewritten (cache-first offline); manifest.json created |
 | v0.76 | Group scoring: stop after first scoring arrow (ABA rule); smaller archer cards |
 | v0.75 | Group scoring: score values shown on buttons per arrow slot |
 | v0.74 | Memberships: unified inline card system with collapsed summary |
