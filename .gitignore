@@ -1,0 +1,13 @@
+# Versioned saves — local backup only, not deployed
+lilydale-bowmen-app_v*.html
+
+# Legacy pre-versioning files
+lilydale-bowmen-app.html
+lilydale-bowmen-testbuild.html
+
+# Claude Code local config (machine-specific permissions)
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

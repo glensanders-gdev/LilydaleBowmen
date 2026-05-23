@@ -4886,14 +4886,14 @@ window.onunhandledrejection = function(e) {
       const isCustom  = !!e.custom;
       const isEdited  = !!e.sourceId;  // built-in that was edited
       const canDelete = isCustom && !isEdited; // only pure custom events can be deleted
-      const editBtn = e.id ? `<button class="event-delete-btn" onclick="editUserEvent('${e.id}', ${!!e.sourceId || !isCustom})" title="Edit" style="color:rgba(201,168,76,0.35);">✎</button>` : '';
-      const delBtn  = canDelete ? `<button class="event-delete-btn" onclick="deleteUserEvent('${e.id}')" title="Remove">✕</button>` : isEdited ? `<button class="event-delete-btn" onclick="revertUserEvent('${e.id}')" title="Revert to original" style="color:rgba(245,240,232,0.2);">↺</button>` : '';
-      const notesHtml = e.notes ? `<p style="font-size:11px;color:rgba(245,240,232,0.4);margin-top:2px;">${e.notes}</p>` : '';
+      const editBtn = e.id ? `<button class="event-delete-btn" data-eid="${escHtml(String(e.id))}" data-src="${!!e.sourceId || !isCustom}" onclick="editUserEvent(this.dataset.eid, this.dataset.src==='true')" title="Edit" style="color:rgba(201,168,76,0.35);">✎</button>` : '';
+      const delBtn  = canDelete ? `<button class="event-delete-btn" data-eid="${escHtml(String(e.id))}" onclick="deleteUserEvent(this.dataset.eid)" title="Remove">✕</button>` : isEdited ? `<button class="event-delete-btn" data-eid="${escHtml(String(e.id))}" onclick="revertUserEvent(this.dataset.eid)" title="Revert to original" style="color:rgba(245,240,232,0.2);">↺</button>` : '';
+      const notesHtml = e.notes ? `<p style="font-size:11px;color:rgba(245,240,232,0.4);margin-top:2px;">${escHtml(String(e.notes))}</p>` : '';
       const editedBadge = isEdited ? `<span style="font-size:9px;color:rgba(201,168,76,0.4);margin-left:5px;">edited</span>` : '';
       return `<div class="event-item type-${tc}${isCustom && !isEdited ? ' custom-event' : ''}${isEdited ? ' custom-event' : ''}">
         <div style="flex:1;min-width:0;">
-          <h4>${e.title}</h4>
-          ${e.time ? `<p style="font-size:11px;color:var(--gold);font-weight:600;margin-bottom:2px;">${e.time}</p>` : ''}
+          <h4>${escHtml(String(e.title||''))}</h4>
+          ${e.time ? `<p style="font-size:11px;color:var(--gold);font-weight:600;margin-bottom:2px;">${escHtml(String(e.time))}</p>` : ''}
           ${notesHtml}
           <span class="event-type-badge badge-${tc}">${e.type}</span>${editedBadge}
         </div>
@@ -6285,8 +6285,8 @@ window.onunhandledrejection = function(e) {
       return `<div class="history-entry" style="cursor:default;flex-direction:column;gap:0;">
         <div style="display:flex;align-items:center;gap:8px;">
           <div style="flex:1;min-width:0;">
-            <h4 style="margin:0 0 2px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.roundName}${courseTag}${catTag}</h4>
-            <p style="margin:0;font-size:11px;color:rgba(245,240,232,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${dateStr} · ${timeStr}${r.division ? ' · ' + r.division : ''}${r.bowProfile ? ' · ' + getBowDisplayLabel(r.bowProfile) : ''}</p>
+            <h4 style="margin:0 0 2px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escHtml(String(r.roundName||''))}${courseTag}${catTag}</h4>
+            <p style="margin:0;font-size:11px;color:rgba(245,240,232,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${dateStr} · ${timeStr}${r.division ? ' · ' + escHtml(String(r.division)) : ''}${r.bowProfile ? ' · ' + escHtml(getBowDisplayLabel(r.bowProfile)) : ''}</p>
           </div>
           <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
             <div style="text-align:right;">
@@ -6895,8 +6895,8 @@ window.onunhandledrejection = function(e) {
         html += `<div style="background:var(--forest);border:1px solid rgba(255,255,255,0.07);border-radius:10px;margin-bottom:8px;overflow:hidden;">
           <div style="display:flex;align-items:center;padding:10px 12px;gap:10px;">
             <div style="flex:1;min-width:0;">
-              <div class="bow-profile-name">${name}</div>
-              ${sub ? `<div class="bow-profile-sub">${sub}</div>` : ''}
+              <div class="bow-profile-name">${escHtml(String(name||''))}</div>
+              ${sub ? `<div class="bow-profile-sub">${escHtml(String(sub))}</div>` : ''}
             </div>
             <div class="bow-profile-actions">
               <button class="bow-profile-edit-btn" onclick="editBowProfile('${type}',${idx})">Edit</button>
@@ -7194,7 +7194,7 @@ window.onunhandledrejection = function(e) {
     const profiles = loadProfiles();
     const activeId = activeProfileId();
     sel.innerHTML = profiles.map(function(p) {
-      return '<option value="' + p.id + '"' + (p.id === activeId ? ' selected' : '') + '>' + (p.name || 'Archer') + '</option>';
+      var optEl = document.createElement('option'); optEl.value = p.id; if (p.id === activeId) optEl.selected = true; optEl.textContent = p.name || 'Archer'; return optEl.outerHTML;
     }).join('');
   }
 
@@ -7503,7 +7503,7 @@ window.onunhandledrejection = function(e) {
       const active = p.id === activeId;
       return `<div class="archer-chip${active ? ' active' : ''}" onclick="switchArcher('${p.id}')">
         <div class="archer-chip-avatar" style="background:${col};">${ini}</div>
-        <div class="archer-chip-name">${p.name || 'Archer'}</div>
+        <div class="archer-chip-name">${escHtml(String(p.name || 'Archer'))}</div>
       </div>`;
     }).join('') +
     `<button class="archer-add-chip" onclick="openAddArcherForm()">
@@ -10044,7 +10044,7 @@ function toggleScoringPrefs() {
 }
 function syncPrefToggles() {
   var prefs = loadScoringPrefs();
-  ['course','starttarget','division','bow','archer'].forEach(function(key) {
+  ['course','starttarget','division','bow','archer','peg'].forEach(function(key) {
     var cb    = document.getElementById('pref-' + key);
     var track = document.getElementById('pref-' + key + '-track');
     if (cb && track) { cb.checked = !!prefs[key]; track.classList.toggle('on', !!prefs[key]); }
@@ -10091,6 +10091,8 @@ function applyScoringPrefs() {
   show('scoring-archer-wrap',       prefs['archer']);
   show('scoring-peg-selector',      prefs['peg'] || mandatory);
   show('scoring-gender-selector',   mandatory);
+  // Always enforce round-specific visibility after preference changes
+  applyRoundTrackingVisibility();
 
   // Auto-fill from active profile
   var p = (typeof getActiveProfile === 'function') ? getActiveProfile() : null;
