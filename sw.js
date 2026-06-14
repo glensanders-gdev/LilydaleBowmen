@@ -1,7 +1,7 @@
-// Lilydale Bowmen — Service Worker v2
+// Lilydale Bowmen — Service Worker v3
 // Cache-first for app shell, network-first with cache fallback for CDN assets.
 
-const CACHE_NAME = 'lb-archery-v2';
+const CACHE_NAME = 'lb-archery-v3';
 
 // Core assets — cached on install, served instantly offline
 const CORE_ASSETS = [
@@ -11,7 +11,7 @@ const CORE_ASSETS = [
 
 // CDN assets — cached on first fetch, served from cache if network unavailable
 const CDN_ASSETS = [
-  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.108.1/dist/umd/supabase.min.js',
   'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Outfit:wght@300;400;500;600&display=swap',
 ];
 

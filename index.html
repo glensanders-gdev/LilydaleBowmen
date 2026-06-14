@@ -2913,7 +2913,7 @@ window.onunhandledrejection = function(e) {
 };
 </script>
 <!-- Supabase JS client -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.108.1/dist/umd/supabase.min.js" integrity="sha384-UQ9Ztz63gzT2JZCuDRkNXV8RP/gXxdPUuM9LKlz2BzqGx9xFYNAK8yAEgbfZHs7P" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -9094,7 +9094,7 @@ function renderGroupRoster() {
       // Saved profile — show profile selector
       var usedIds = gs.archers.filter(function(x) { return !x.isGuest && !x.isMember && x.id !== a.id; }).map(function(x) { return x.id; });
       var opts = profiles.map(function(p) {
-        return '<option value="' + p.id + '"' + (p.id === a.id ? ' selected' : '') + (usedIds.includes(p.id) ? ' disabled' : '') + '>' + (p.name || 'Archer') + '</option>';
+        return '<option value="' + p.id + '"' + (p.id === a.id ? ' selected' : '') + (usedIds.includes(p.id) ? ' disabled' : '') + '>' + escHtml(p.name || 'Archer') + '</option>';
       }).join('');
       profileSelect = '<select data-old="' + a.id + '" onchange="updateGroupArcherProfile(this.dataset.old,this.value)" style="' + inputStyle + '-webkit-appearance:none;">' + opts + '</select>';
     } else {
@@ -10323,12 +10323,17 @@ function getSupabase() {
 function getDeviceId() {
   var id = localStorage.getItem('lb_device_id');
   if (!id) {
-    // Generate UUID v4
-    id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0;
-      var v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+    if (window.crypto && crypto.randomUUID) {
+      id = crypto.randomUUID();
+    } else {
+      id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (window.crypto && crypto.getRandomValues)
+          ? crypto.getRandomValues(new Uint8Array(1))[0] % 16
+          : Math.random() * 16 | 0;
+        var v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
     localStorage.setItem('lb_device_id', id);
   }
   return id;
