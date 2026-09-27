@@ -5,8 +5,9 @@ lilydale-bowmen-app_v*.html
 lilydale-bowmen-app.html
 lilydale-bowmen-testbuild.html
 
-# Claude Code local config (machine-specific permissions)
-.claude/
+# Claude Code local config (machine-specific permissions) — except the shared coding standards
+.claude/*
+!.claude/CODING-STANDARDS.md
 
 # OS
 .DS_Store
